@@ -10,7 +10,6 @@ typedef vector<pthread_t> PTHREADS;
 /* 
 线程池内置了一个队列 保存工作队列
 由 两个 Job指针记录
-uu
 class Job 为队列节点
 */
 /*
