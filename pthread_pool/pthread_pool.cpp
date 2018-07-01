@@ -1,49 +1,37 @@
+
+
 #include <unistd.h>
 #include <signal.h>
 #include <iostream>
 #include "pthread_pool.h"
-#include "log.h"
 
-namespace k {
+namespace PTHREAS{
 using namespace std;
-static int MAX_PTHREADS =4;
-static int MAX_JOBS =10000;
-
 /*
-1 set signal for sigpipi
-2 initialize mutex and cond
+* set signal for sigpipi
+* initialize mutex and cond
 */
-int Pthread_pool::Init() {
-signal(SIGPIPE,For_SIGPIPE);    // sigpipe
 
-//MAX_PTHREADS =atoi((config->GetValue("max_pthreads")).c_str());
-//MAX_JOBS =atoi((config->GetValue("max_Jobs")).c_str());
+Pthread_pool::Ptheead_pool(int maxjobs,int maxthreads)::MaxJobs(maxjobs),MaxThreads(maxthreads){} 
 
-pthread_mutex_init(&mutex,NULL); 
-pthread_cond_init(&no_empty,NULL);
-
-// for quere
-point = NULL;   
-reac  = NULL;  
-Job_count = 0;
-int err = create_pthread();  //call function  create_pthread
-if(err){
-  cout<<"#pthread pool init success:Max pthreads "<<MAX_PTHREADS<<" jobs:"<<MAX_JOBS<<endl; //test
-  log_info("pthread pool init success");
-  return 0;
-} else { 
-  cout<<"#pthread pool init failed"<<endl; //test
-  log_error("pthread pool init failed");
-  return -1;
-}
+int Pthread_pool::Init(int maxjobs,int maxthreads) {
+ signal(SIGPIPE,For_SIGPIPE);    // sigpipe
+ pthread_mutex_init(&mutex,NULL); 
+ pthread_cond_init(&no_empty,NULL);
+ // for quere
+ int flag = create_pthread();  //call function  create_pthread
+ if(!flag){
+   cout<<"#pthread pool init failed"<<endl; //test
+   return -1;
+ }
 }
 // create pthread
 int Pthread_pool::create_pthread() {
  int i,err;
- for(i =0;i<MAX_PTHREADS;i++) {
+ for(i =0;i<MaxThreads;i++) {
     pthread_t id;
     pthread_create(&id,NULL,P_Function,this);
-    save_ID.push_back(id);
+    PID.push_back(id);
 }
 return 1;
 }
