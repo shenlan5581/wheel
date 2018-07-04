@@ -7,7 +7,7 @@
 
 namespace PTHREAS{
 using namespace std;
-/*
+/*kk
 * set signal for sigpipi
 * initialize mutex and cond
 */
