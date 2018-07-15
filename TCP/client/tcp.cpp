@@ -2,20 +2,35 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <netdb.h>
+#include <string.h>
 
 #include "tcp.h"
 
 namespace TCP {
-  TCP_C::TCP_C(std::string addr,int port){
+  TCP_C::TCP_C(std::string hostname,std::string service){
     struct sockaddr_in servaddr;
     int err, n, i;                         
     socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+//use name creat struct by hostname 
+    struct addrinfo set,ret,*result;
+    set.ai_flags    = AI_CANONNAME;
+    set.ai_family   = AF_INET;
+    set.ai_socktype = SOCK_STREAM;
+    set.ai_protocol = IPPROTO_TCP;
+    result = &ret;
+    err =  getaddrinfo(hostname.c_str(),service.c_str(),&set,&result);
+    if(!err) 
+/*
+use IP creat struct by IP
+    struct sockaddr_in servaddr;
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(port);
     inet_pton(AF_INET, addr.c_str(), &servaddr.sin_addr);
-    int flag = connect(socket_fd, (struct sockaddr *)&servaddr,
-            sizeof(servaddr));
-    if(flag != 0 ) {
+*/
+    err = connect(socket_fd, (struct sockaddr *)result->ai_addr,
+            sizeof(*(result->ai_addr)));
+    if(err != 0 ) {
        socket_fd = -1;
     }
 }
@@ -41,6 +56,7 @@ int TCP_C::Send(void * data,int len) {
 }
 
 int TCP_C::Recv(void * buf,int len){
+    memset(buf,0,len);
     if( socket_fd <= 0)
        return -1;
     else { 

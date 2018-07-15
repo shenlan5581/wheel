@@ -8,26 +8,35 @@
 #include "tcp.h"
 using std::string;
 int main() {
-TCP::TCP_C tcp("47.94.154.159",80);
-
 string req;
 
-req = "GET / HTTP/1.1\n";
+for (  ;  ; ) {
+string dest,service;
+  std::cout<<"putin hostname\n";
+  std::cin>>dest;
+if(dest == "exit")
+   return 0;
+  std::cout<<"putin service\n";
+  std::cin>>service;
+TCP::TCP_C tcp(dest,service);
+req =      "GET / HTTP/1.1\n";
 req =req + "Accept:*/*\n";
-req =req + "Host:k@linux\n";
+req =req + "Host:\"61.135.169.121\"\n";
+req =req + "Accept-Encoding:\"gzip,deflate\"\n";
 req =req + "Connection:Keep-Alive\n";
 req =req + "\n";
 req =req + "\n";
-
 if( tcp.Send((void*)req.c_str(),req.length()) > 0)
   std::cout<<"ok";
 else 
   std::cout<<"failed";
+char buf[150];
+tcp.Recv(buf,150);
+std::cout<<buf<<"\n*** ***"<<std::endl;
 
-char buf[350];
-tcp.Recv(buf,350);
 
-std::cout<<buf;
+
+}
 
 return 0;
 }
