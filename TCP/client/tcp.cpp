@@ -21,17 +21,12 @@ namespace TCP {
     result = &ret;
     err =  getaddrinfo(hostname.c_str(),service.c_str(),&set,&result);
     if(!err) 
-/*
-use IP creat struct by IP
-    struct sockaddr_in servaddr;
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(port);
-    inet_pton(AF_INET, addr.c_str(), &servaddr.sin_addr);
-*/
     err = connect(socket_fd, (struct sockaddr *)result->ai_addr,
             sizeof(*(result->ai_addr)));
     if(err != 0 ) {
        socket_fd = -1;
+    } else {
+      freeaddrinfo(result);
     }
 }
 /* Write to a valid socket 
