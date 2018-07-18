@@ -7,6 +7,10 @@
 
 namespace PTHREAD{
 using namespace std;
+/*
+* set signal for sigpipi
+* initialize mutex and cond
+*/
 
 Pthread_pool::Ptheead_pool(int maxjobs,int maxthreads)::
                MaxJobs(maxjobs),MaxThreads(maxthreads){} 
