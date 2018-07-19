@@ -5,11 +5,10 @@
 
 void * cb(void* client){
     int * cli =(int*)client;
-   char buf[50];
+    char buf[50];
     read(*cli,buf, 50);
     write(1,buf,50);
 }
-
 
 
 int main(){
