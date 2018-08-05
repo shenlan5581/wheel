@@ -5,6 +5,7 @@
 * Of course, you can reassign it.
 * When instancing you must specifies max jobs and max pthreads in addition call Init()
 * It will create threads and complete the initialization.
+* When
 */
 #pragma once
 #include <pthread.h>
@@ -24,17 +25,17 @@ class Pthread_pool {
     int Init();    
     int Add_Work(void *obj);
  private:
-   int  MaxJobs
-   int  MaxThreads
-   vector<pthread_t>   PID;   //save pthread ID
-   queue<void*>        Job;   //job queue
+    int  MaxJobs
+    int  MaxThreads
+    vector<pthread_t>   PID;   //save pthread ID
+    queue<void*>        Job;   //job queue
 
-   pthread_mutex_t mutex;
-   pthread_cond_t  no_empty;
-   int create_pthread(); 
+    pthread_mutex_t mutex;
+    pthread_cond_t  no_empty;
+    int create_pthread(); 
  public:
-   static void * P_Function(void *);   //thread function
-   static void   For_SIGPIPE(int n);   //ignore this signal
+    static void * P_Function(void *);   //thread function
+    static void   For_SIGPIPE(int n);   //ignore this signal
 };
 
 } //namespace

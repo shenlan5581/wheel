@@ -5,47 +5,44 @@
 #include <iostream>
 #include "pthread_pool.h"
 
-namespace PTHREAS{
+namespace PTHREAD{
 using namespace std;
-/*kk
+/*
 * set signal for sigpipi
 * initialize mutex and cond
 */
 
-Pthread_pool::Ptheead_pool(int maxjobs,int maxthreads)::MaxJobs(maxjobs),MaxThreads(maxthreads){} 
+Pthread_pool::Ptheead_pool(int maxjobs,int maxthreads)::
+               MaxJobs(maxjobs),MaxThreads(maxthreads){} 
 
-int Pthread_pool::Init(int maxjobs,int maxthreads) {
- signal(SIGPIPE,For_SIGPIPE);    // sigpipe
- pthread_mutex_init(&mutex,NULL); 
- pthread_cond_init(&no_empty,NULL);
- // for quere
- int flag = create_pthread();  //call function  create_pthread
- if(!flag){
-   cout<<"#pthread pool init failed"<<endl; //test
-   return -1;
- }
+//Return:flag it's a number of how many thread created
+int Pthread_pool::Init() {
+    signal(SIGPIPE,For_SIGPIPE);
+    pthread_mutex_init(&mutex,NULL); 
+    pthread_cond_init(&no_empty,NULL);
+  return create_pthread();
 }
-// create pthread
+
 int Pthread_pool::create_pthread() {
- int i,err;
- for(i =0;i<MaxThreads;i++) {
     pthread_t id;
-    pthread_create(&id,NULL,P_Function,this);
-    PID.push_back(id);
-}
-return 1;
+    for(int i = 0;i < MaxThreads;i++) {
+       if(pthread_create(&id,NULL,P_Function,this)=0)
+          PID.push_back(id);
+       else
+          break;
+    }
+  return i;
 }
 
-// static 
 void * Pthread_pool::P_Function(void * obj) {   
-class Pthread_pool *pool = (class Pthread_pool*)obj;     
-  Job *  cur_Job = NULL;
-while(1) {   
-      pthread_mutex_lock(&pool->mutex);
-      while((pool->point)==NULL) {         
+       Pthread_pool *pool = (class Pthread_pool*)obj;     
+      while(1) {   
+         pthread_mutex_lock(&pool->mutex);
+         while(pool->Job.empty()) {         
            pthread_cond_wait(&pool->no_empty,&pool->mutex);        
          }
-         cur_Job = pool->Pop_work();           // get work from queue
+         ???? = pool->Job.front();           // get work from queue
+         pool->Job.pop();
          pthread_mutex_unlock(&pool->mutex);   // free mutex
          pthread_cond_signal(&pool->no_empty); // send signal
          OBJ * job = cur_Job->obj;
