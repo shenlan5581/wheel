@@ -9,7 +9,7 @@
 using std::string;
 int main() {
 string req;
-
+ 
 for (  ;  ; ) {
 string dest,service;
   std::cout<<"putin hostname\n";
@@ -33,9 +33,7 @@ else
 char buf[150];
 tcp.Recv(buf,150);
 std::cout<<buf<<"\n*** ***"<<std::endl;
-
-
-
+ 
 }
 
 return 0;

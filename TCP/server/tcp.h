@@ -20,11 +20,11 @@ class TCP_S {
   private:
     int MAXEPOLLFD;
     int LISTENPORT;
-
-    int     listen_fd;
-    int     epoll_fd;
+    
+    int listen_fd;
+    int epoll_fd;
     struct  epoll_event event,*events;
-    void *(*callback)(void *);  // call back function
+    void *(*callback)(void *);            // call back function
 
     std::map<int,struct sockaddr>  list;  //connect list
     std::map<int,struct sockaddr>::iterator  iter; 

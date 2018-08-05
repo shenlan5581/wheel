@@ -14,10 +14,10 @@ namespace TCP {
     socket_fd = socket(AF_INET, SOCK_STREAM, 0);
 //use name creat struct by hostname 
     struct addrinfo set,ret,*result;
-    set.ai_flags    = AI_CANONNAME;
-    set.ai_family   = AF_INET;
+    set.ai_flags       = AI_CANONNAME;
+    set.ai_family     = AF_INET;
     set.ai_socktype = SOCK_STREAM;
-    set.ai_protocol = IPPROTO_TCP;
+    set.ai_protocol  = IPPROTO_TCP;
     result = &ret;
     err =  getaddrinfo(hostname.c_str(),service.c_str(),&set,&result);
     if(!err) 

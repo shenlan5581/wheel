@@ -1,4 +1,3 @@
-
 #include  <sys/epoll.h>
 #include  <fcntl.h>
 #include  <netdb.h>
@@ -20,7 +19,7 @@ TCP_S::TCP_S(void*(*cb_function)(void *),int maxEPFD,
          listen_fd = -1;
          return ;
       }
-      setnonblcoking(&listen_fd);     // 非阻塞模式
+      setnonblcoking(&listen_fd);            // 非阻塞模式
       event.data.fd = listen_fd;
       event.events = EPOLLIN | EPOLLET;
       epoll_fd = epoll_create(MAXEPOLLFD);   //epoll
@@ -37,7 +36,7 @@ int TCP_S::Run() {
     }
     std::cout<<"****Running****"<<std::endl;
     struct sockaddr    addr;
-             socklen_t   len;  
+           socklen_t   len;  
     int client;
 
     while(1) { 
@@ -62,8 +61,8 @@ int TCP_S::Run() {
                   epoll_ctl(epoll_fd,EPOLL_CTL_DEL,events[i].data.fd,NULL);
 
             } else if(events[i].events & EPOLLIN ) {     // read
-               int  client = int(events[i].data.fd);
-                    callback((void*)&client);
+							 int client = int(events[i].data.fd);
+										callback((void*)&client);
             }
         } 
     }
